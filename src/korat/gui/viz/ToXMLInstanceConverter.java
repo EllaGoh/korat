@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.gui.viz;
 
 import java.io.File;
@@ -294,55 +296,64 @@ public class ToXMLInstanceConverter {
 
     }
 
-    private void writeInstanceXML(PrintStream ps, String filename,
-            String command) {
+    private static String xml(String value) {
+        return value.replace("&", "&amp;").replace("\"", "&quot;")
+                .replace("<", "&lt;").replace(">", "&gt;");
+    }
 
-        ps.println("<?xml version=\"1.0\"?>");
-        ps.println("<alloy>");
-        ps.println("<instance filename=\"" + filename + "\" command=\""
-                + command + "\">");
-
-        ps.println();
-
+    private void writeInstanceXML(PrintStream ps, String filename, String command) {
+        Map<AlloySig, Integer> ids = new java.util.LinkedHashMap<>();
+        int nextId = 4;
+        int bitwidth = 1;
         for (AlloySig sig : SigFactory.getInstance().getAllSigs()) {
-
-            String s = "  <sig name=\"{0}\" extends=\"{1}\">";
-            String extendsSigName = "univ";
-            if (sig.getExtendsSig() != null)
-                extendsSigName = sig.getExtendsSig().getName();
-            s = MessageFormat.format(s, sig.getName(), extendsSigName);
-            ps.println(s);
-            for (AlloyAtom atom : sig.getAtoms()) {
-                ps.println("    <atom name=\"" + atom.getName() + "\"/>");
+            ids.put(sig, sig.isPrimitive() ? 1 : nextId++);
+            if (sig.isPrimitive()) {
+                for (AlloyAtom atom : sig.getAtoms()) {
+                    long value = Long.parseLong(atom.getName());
+                    while (value < -(1L << (bitwidth - 1)) || value >= (1L << (bitwidth - 1)))
+                        bitwidth++;
+                }
             }
-            ps.println("  </sig>");
-
         }
-
-        ps.println();
-
+        ps.println("<?xml version=\"1.0\"?>");
+        ps.println("<alloy builddate=\"Korat\">");
+        ps.println("<instance filename=\"" + xml(filename) + "\" command=\"" + xml(command)
+                + "\" bitwidth=\"" + bitwidth + "\" maxseq=\"0\" mintrace=\"1\" maxtrace=\"1\" tracelength=\"1\" looplength=\"1\">");
+        ps.println("<sig label=\"univ\" ID=\"0\" builtin=\"yes\"/>");
+        ps.println("<sig label=\"Int\" ID=\"1\" parentID=\"0\" builtin=\"yes\"/>");
+        ps.println("<sig label=\"seq/Int\" ID=\"2\" parentID=\"1\" builtin=\"yes\"/>");
+        ps.println("<sig label=\"String\" ID=\"3\" parentID=\"0\" builtin=\"yes\"/>");
+        for (AlloySig sig : ids.keySet()) {
+            if (sig.isPrimitive()) continue;
+            int parent = sig.getExtendsSig() == null ? 0 : ids.get(sig.getExtendsSig());
+            ps.println("<sig label=\"" + xml(sig.getName()) + "\" ID=\"" + ids.get(sig) + "\" parentID=\"" + parent + "\">");
+            for (AlloyAtom atom : sig.getAtoms())
+                ps.println("<atom label=\"" + xml(atom.getName()) + "\"/>");
+            ps.println("</sig>");
+        }
+        // Each relation contains all of its tuples, rather than one field per edge.
+        Map<String, java.util.List<AlloyField>> relations = new java.util.LinkedHashMap<>();
         for (AlloyField field : FieldFactory.getInstance().getAllFields()) {
-
-            ps.println("  <field name=\"" + field.getName() + "\">");
-            ps.println("    <type>");
-            for (AlloySig sig : field.getTypes()) {
-                ps.println("      <sig name=\"" + sig.getName() + "\"/>");
-            }
-            ps.println("    </type>");
-            ps.println("    <tuple>");
-            for (AlloyAtom atom : field.getValues()) {
-                ps.println("      <atom name=\"" + atom.getName() + "\"/>");
-            }
-            ps.println("    </tuple>");
-            ps.println("  </field>");
-
+            String key = field.getName();
+            for (AlloySig type : field.getTypes()) key += ":" + ids.get(type);
+            relations.computeIfAbsent(key, k -> new java.util.ArrayList<>()).add(field);
         }
-
-        ps.println();
-
-        ps.println("</instance>");
-        ps.println("</alloy>");
-
+        for (java.util.List<AlloyField> tuples : relations.values()) {
+            AlloyField field = tuples.get(0);
+            ps.println("<field label=\"" + xml(field.getName()) + "\" ID=\"" + nextId++
+                    + "\" parentID=\"" + ids.get(field.getTypes().get(0)) + "\">");
+            for (AlloyField tuple : tuples) {
+                ps.println("<tuple>");
+                for (AlloyAtom atom : tuple.getValues())
+                    ps.println("<atom label=\"" + xml(atom.getName()) + "\"/>");
+                ps.println("</tuple>");
+            }
+            ps.println("<types>");
+            for (AlloySig type : field.getTypes())
+                ps.println("<type ID=\"" + ids.get(type) + "\"/>");
+            ps.println("</types></field>");
+        }
+        ps.println("</instance></alloy>");
     }
 
     private void buildModel(Object obj) throws UnsupportedTypeException {

@@ -1,6 +1,7 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.instrumentation;
 
-import static javassist.Modifier.FINAL;
 import static javassist.Modifier.PROTECTED;
 import static javassist.Modifier.PUBLIC;
 import static javassist.Modifier.TRANSIENT;
@@ -235,12 +236,12 @@ public class ArrayGenerator {
             
             //Load all inner classes
             for (int i = 1; i < clz.length; i++) {
-                Class<?> c = clz[i].toClass();
+                Class<?> c = clz[i].toClass(korat.instrumentation.$koratcreated$.GeneratedClassLookup.lookup());
                 generatedClasses.put(className, c);
             }
             
             //It's ok now to load the KoratArray class
-            clazz = clz[0].toClass();
+            clazz = clz[0].toClass(korat.instrumentation.$koratcreated$.GeneratedClassLookup.lookup());
             generatedClasses.put(className, clazz);
             
         } catch (Exception e) {
@@ -355,7 +356,8 @@ public class ArrayGenerator {
         clz.addField(length_id);
 
         CtField koratTester = new CtField(cp.get(ITester.class.getName()), "tester", clz);
-        koratTester.setModifiers(PROTECTED | TRANSIENT | FINAL);
+        // initialize() assigns this field after construction.
+        koratTester.setModifiers(PROTECTED | TRANSIENT);
         clz.addField(koratTester);
 
     }

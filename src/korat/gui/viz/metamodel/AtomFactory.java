@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.gui.viz.metamodel;
 
 import java.util.HashMap;
@@ -43,7 +45,7 @@ public class AtomFactory {
 
         AlloyAtom a = allAtoms.get(i);
         if (a == null) {
-            a = new AlloyAtom(sig, Integer.toString(i), new Integer(i));
+            a = new AlloyAtom(sig, Integer.toString(i), Integer.valueOf(i));
             allAtoms.put(i, a);
             allAtomsOrdered.add(a);
         }

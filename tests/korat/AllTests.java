@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat;
 
 import junit.framework.Test;
@@ -17,6 +19,8 @@ public class AllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite("Tests for korat");
         // $JUnit-BEGIN$
+        suite.addTestSuite(korat.examples.redblacktree.RedBlackTreeTest.class);
+        suite.addTestSuite(korat.gui.viz.AlloyVisualizationTest.class);
         suite.addTest(ExplorationAllTests.suite());
         suite.addTest(InstrumentationAllTests.suite());
         suite.addTest(CVAllTests.suite());

@@ -1,0 +1,48 @@
+Javassist: 3.30.2-GA
+Maven coordinates: org.javassist:javassist:3.30.2-GA
+Source: https://github.com/jboss-javassist/javassist/tree/rel_3_30_2_ga
+Binary: https://repo.maven.apache.org/maven2/org/javassist/javassist/3.30.2-GA/javassist-3.30.2-GA.jar
+License: MPL 1.1 / LGPL 2.1 or later / Apache License 2.0 (choice).
+See javassist-3.30.2-GA-LICENSE.html for the updated dependency notice.
+The original Javassist JAR and its unchanged license are archived in
+legacy/javassist.jar and legacy/javassist-LICENSE.html.
+
+Alloy: 6.2.0.202501090817 (user-provided distribution)
+File: org.alloytools.alloy.dist.jar
+Source: https://github.com/AlloyTools/org.alloytools.alloy
+Git revision: 794226dd07b536fe35c5ca44b529417183cd629b
+License: see org.alloytools.alloy-LICENSE.txt and notices inside the JAR.
+The original alloy4viz.jar is archived in legacy/ and excluded from the
+build and packaged distribution. Its original license remains unchanged
+at alloy4viz-LICENSE.txt (also retained with the archived JAR).
+
+Commons CLI: 1.0 (manifest-verified)
+File: commons-cli-1.0.jar
+License: Apache Software License 1.1; see commons-cli-LICENSE.txt.
+
+JUnit: legacy bundled distribution (version not declared in its manifest)
+File: junit.jar
+License: Common Public License 1.0; see junit-LICENSE(cpl-v10).html.
+
+Alloy notice clarification
+--------------------------
+org.alloytools.alloy-LICENSE.txt is preserved as supplied. Its first line
+states: "THIS IS NOT VALID YET! CURRENTLY CODE IS UNDER MIT LICENSE".
+The Apache License 2.0 text that follows is therefore not presented here
+as the effective license for Alloy. The matching Alloy 6.2.0 visualizer
+source also carries an MIT notice, with a historical "Alloy Analyzer 4"
+header. That header does not identify the running library version.
+Source: https://github.com/AlloyTools/org.alloytools.alloy/blob/794226dd07b536fe35c5ca44b529417183cd629b/org.alloytools.alloy.application/src/main/java/edu/mit/csail/sdg/alloy4viz/VizGUI.java
+
+Only org.alloytools.alloy-LICENSE.txt is included as a separate license
+file for the active Alloy distribution. Embedded third-party licenses
+and notices remain inside the unmodified Alloy JAR; they are not extracted
+into separate files. This inventory does not assign one license to every
+component bundled in that JAR.
+
+Packaging
+---------
+ant createJar copies the project README and license, active dependency
+license files, and this inventory into dist/. Legacy binaries and their
+licenses remain in lib/legacy/ in the source repository and are not
+included in dist/.

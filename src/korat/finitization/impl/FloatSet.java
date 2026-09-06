@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.finitization.impl;
 
 import korat.finitization.IFloatSet;
@@ -22,7 +24,7 @@ public class FloatSet extends PrimitiveTypeSet implements IFloatSet {
     }
 
     public void addFloat(float f) {
-        Float ff = new Float(f);
+        Float ff = Float.valueOf(f);
         primitives.add(ff);
     }
 

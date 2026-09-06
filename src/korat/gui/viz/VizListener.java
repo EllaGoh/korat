@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.gui.viz;
 
 import java.util.LinkedList;
@@ -63,6 +65,8 @@ public class VizListener implements ITestCaseListener {
     }
 
     public void visualizeAll() {
+        if (instanceFileNames.isEmpty())
+            return;
 
         SwingUtilities.invokeLater(new Runnable() {
 
@@ -71,9 +75,10 @@ public class VizListener implements ITestCaseListener {
                 VizGUI vg = new VizGUI(true, "", null);
 
                 for (String inst : instanceFileNames)
-                    vg.run(VizGUI.evs_loadInstance, inst);
+                    vg.loadXML(inst, true);
 
-                vg.run(203, themeFileName);
+                if (themeFileName != null)
+                    vg.loadThemeFile(themeFileName);
 
             }
 

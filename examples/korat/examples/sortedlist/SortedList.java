@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.examples.sortedlist;
 
 import java.util.Set;
@@ -78,7 +80,7 @@ public class SortedList {
         IClassDomain elemsClassDomain = f.createClassDomain(Integer.class);
         elemsClassDomain.includeInIsomorphismCheck(false);
         for (int i = 1; i <= numElems; i++)
-            elemsClassDomain.addObject(new Integer(i));
+            elemsClassDomain.addObject(Integer.valueOf(i));
         elems.addClassDomain(elemsClassDomain);
         elems.setNullAllowed(true);
 
