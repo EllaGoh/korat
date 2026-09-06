@@ -1,0 +1,8 @@
+.git
+
+# Generated build outputs
+/build/
+/dist/
+/test-reports/
+/viz_instances/
+/viz_themes/

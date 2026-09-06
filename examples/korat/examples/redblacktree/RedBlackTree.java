@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.examples.redblacktree;
 
 import java.util.Set;
@@ -78,6 +80,12 @@ public class RedBlackTree {
         // RootHasNoParent
         if (root.parent != null)
             return debug("RootHasNoParent");
+        // RootIsBlack
+        if (root.color != BLACK)
+            return debug("RootIsBlack");
+
+
+
         Set visited = new java.util.HashSet();
         visited.add(new Wrapper(root));
         java.util.LinkedList workList = new java.util.LinkedList();
@@ -114,6 +122,7 @@ public class RedBlackTree {
     }
 
     private boolean repOkColors() {
+
         // RedHasOnlyBlackChildren
         java.util.LinkedList workList = new java.util.LinkedList();
         workList.add(root);

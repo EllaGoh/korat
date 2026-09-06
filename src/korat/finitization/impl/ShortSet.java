@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.finitization.impl;
 
 import korat.finitization.IShortSet;
@@ -22,7 +24,7 @@ public class ShortSet extends PrimitiveTypeSet implements IShortSet {
     }
 
     public void addShort(short s) {
-        Short ss = new Short(s);
+        Short ss = Short.valueOf(s);
         primitives.add(ss);
     }
 
@@ -35,7 +37,7 @@ public class ShortSet extends PrimitiveTypeSet implements IShortSet {
             primitives.add(s);
             s += diff;
         }
-        primitives.add(new Short(max));
+        primitives.add(Short.valueOf(max));
     }
 
     public void removeShort(short s) {

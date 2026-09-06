@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.loading.filter;
 
 /**
@@ -34,7 +36,8 @@ public interface DefaultFilters {
      */
     public static class ExcludeSystemPackagesFilter extends PackageFilter {
         public boolean allowProcessing(String className) {
-            return !(   className.matches("^java\\..*")
+            return !(   className.startsWith("jdk.")
+                     || className.matches("^java\\..*")
                      || className.matches("^javax\\..*")
                      || className.matches("^sun\\..*")
                      || className.matches("^sunw\\..*")

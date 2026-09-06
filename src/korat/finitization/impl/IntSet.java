@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.finitization.impl;
 
 import korat.finitization.IIntSet;
@@ -28,7 +30,7 @@ public class IntSet extends PrimitiveTypeSet implements IIntSet {
     }
 
     public void removeInt(int i) {
-        primitives.remove(new Integer(i));
+        primitives.remove(Integer.valueOf(i));
     }
 
     public void addRange(int min, int diff, int max) {

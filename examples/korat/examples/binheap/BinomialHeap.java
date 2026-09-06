@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.examples.binheap;
 
 import java.util.HashSet;
@@ -143,11 +145,11 @@ public class BinomialHeap  {
             while (temp != null) {
                 if ((temp.degree != rightDegree) || (temp.parent != parent_)
                         || (temp.key <= key_) || (nodesSet.contains(temp))
-                        || (keysSet.contains(new Integer(temp.key)))) {
+                        || (keysSet.contains(Integer.valueOf(temp.key)))) {
                     return false;
                 } else {
                     nodesSet.add(temp);
-                    keysSet.add(new Integer(temp.key));
+                    keysSet.add(Integer.valueOf(temp.key));
                     if (temp.child == null) {
                         temp = temp.sibling;
 

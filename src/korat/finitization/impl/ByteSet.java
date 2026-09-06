@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.finitization.impl;
 
 import korat.finitization.IByteSet;
@@ -31,14 +33,14 @@ public class ByteSet extends PrimitiveTypeSet implements IByteSet {
 
         byte b = min;
         while (b < max) {
-            primitives.add(new Byte(b));
+            primitives.add(Byte.valueOf(b));
             b += diff;
         }
-        primitives.add(new Byte(max));
+        primitives.add(Byte.valueOf(max));
     }
 
     public void removeByte(byte b) {
-        Byte bb = new Byte(b);
+        Byte bb = Byte.valueOf(b);
         primitives.remove(bb);
     }
 

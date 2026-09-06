@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.finitization.impl;
 
 import korat.finitization.IDoubleSet;
@@ -22,7 +24,7 @@ public class DoubleSet extends PrimitiveTypeSet implements IDoubleSet {
     }
 
     public void addDouble(double d) {
-        Double dd = new Double(d);
+        Double dd = Double.valueOf(d);
         primitives.add(dd);
     }
 

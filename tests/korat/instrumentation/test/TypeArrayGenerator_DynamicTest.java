@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.instrumentation.test;
 
 import static korat.utils.ReflectionUtils.getFieldWithAccess;
@@ -154,7 +156,7 @@ public class TypeArrayGenerator_DynamicTest extends TestCase {
             assertEquals('A', values[i]);
 
             // Does it get the value back
-            Object value = get.invoke(array, new Object[] { new Integer(i) });
+            Object value = get.invoke(array, new Object[] { Integer.valueOf(i) });
             assertNotNull(value);
             assertEquals('A', value);
             

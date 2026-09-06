@@ -1,3 +1,5 @@
+// Modified 2026-09-06: Java 17 modernization and related compatibility,
+// visualization, invariant, or regression-test updates; see CHANGES.md.
 package korat.exploration;
 
 import junit.framework.Test;
@@ -10,6 +12,7 @@ public class ExplorationAllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite("Test for korat.exploration");
         // $JUnit-BEGIN$
+        suite.addTestSuite(RedBlackTreeExplorationTest.class);
         suite.addTestSuite(BinaryTreeExplorationTest.class);
         suite.addTestSuite(HeapArrayExplorationTest.class);
         suite.addTestSuite(FibonacciHeapExplorationTest.class);
